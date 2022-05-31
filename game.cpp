@@ -1,12 +1,12 @@
 #include "game.hpp"
 
-Game::Game() {
+Game::Game()
+: textbox( [&](std::string s){ tbg.EvalPlayerInput(s); } )
+, tbg( [&](std::string s){ textbox.Write(s); } ) {
 
     // textbox read is bound to tbg eval
     // tbg write is bound to textbox set text
 
-    textbox = TextBox( [&](std::string s){ tbg.EvalPlayerInput(s); } );
-    tbg = TextBasedGame( [&](std::string s){ textbox.Write(s); } );
 }
 
 Game::~Game() {}
@@ -16,6 +16,7 @@ void Game::Init() {
     SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_UNDECORATED);
     InitWindow(Game::WinWidth, Game::WinHeight, "textbasedgame");
     SetExitKey(0);
+    SetExitKey(KEY_ESCAPE);
 
     roomImgTexture = LoadTexture("./assets/a.png");
 }

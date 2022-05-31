@@ -2,7 +2,15 @@
 
 /* ------- PLAYER ------- */
 
+Player::Player() : currentRoom(Room::InvalidRoom) {}
 
+Room &Player::GetCurrentRoom() {
+    return currentRoom;
+}
+
+void Player::SetCurrentRoom(Room &r) {
+    currentRoom = r;
+}
 
 /* ------- TEXTBASEDGAME ------- */
 
@@ -18,6 +26,18 @@ TextBasedGame::TextBasedGame(std::function<void(std::string)> _writeFunc) {
     state = State::Title;
     WriteGameOutput = _writeFunc;
 
+    /* init rooms */
+
+    rooms = {
+        {"Kitchen", Room("Kitchen")}
+    };
+
+
+
+    /* init player */
+
+    player.SetCurrentRoom(rooms.at("Kitchen"));
+
     WriteGameOutput("This is the title msg.");
 
 }
@@ -25,9 +45,7 @@ TextBasedGame::TextBasedGame(std::function<void(std::string)> _writeFunc) {
 void TextBasedGame::EvalPlayerInput(std::string s) {
 
     for (Command& c : GetCommands()) {
-        std::cout << c.GetName() << std::endl;
         if (c.Eval(s)) {
-        std::cout << "> " << c.GetName() << std::endl;
             break;
         }
     }

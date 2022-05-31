@@ -14,6 +14,17 @@
 
 class Player {
 
+    private:
+
+        Room &currentRoom;
+
+    public:
+
+        Player();
+        Player(const Player&) = delete;
+
+        Room &GetCurrentRoom();
+        void SetCurrentRoom(Room &r);
 };
 
 class TextBasedGame {
@@ -30,21 +41,25 @@ class TextBasedGame {
             Quitting,
         };
 
+        // todo add consts here
         struct Messages {
-            static std::string
-                Title,
-                Help,
-                PromptQuit;
+            static inline std::string
+                Title = "You are on the title screen.",
+                Help = "This is the help message.",
+                PromptQuit = "Do you want to quit? (y/n)";
+
+                // TODO: functions here, to copy the exact verb the player used, unless it's invalid, in which case "what do you want to do?"
+                //                                   ^ eg. "what do you want to pick up?"
+                // maybe look at STR_KEYWORDS from tbg5/alpha/globals to get an idea
         };
 
         State state;
         State preQuitState; // state prior to quit conf - gameplay or title
 
         Player player;
-        // ?
-        std::unordered_map<std::string, std::shared_ptr<Room>> rooms;
-        std::unordered_map<std::string, std::shared_ptr<Item>> items;
-        std::unordered_map<std::string, std::shared_ptr<NPC>> npcs;
+        std::unordered_map<std::string, Room> rooms;
+        std::unordered_map<std::string, Item> items;
+        std::unordered_map<std::string, NPC> npcs;
 
     public:
         
